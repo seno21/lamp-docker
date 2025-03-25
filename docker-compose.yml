@@ -1,0 +1,56 @@
+services:
+  webserver:
+    container_name: apache-php
+    image: php:8.4-apache
+    restart: unless-stopped
+    networks:
+      - net_lamp
+    volumes:
+      - ./public_html/app:/var/www/html/app
+      - ./public_html/portal:/var/www/html/portal
+      - ./config/app.nzucode.web.id.conf:/etc/apache2/sites-available/app.nzucode.web.id.conf
+      - ./config/portal.nzucode.web.id.conf:/etc/apache2/sites-available/portal.nzucode.web.id.conf
+    command: >
+      bash -c "a2enmod ssl && a2ensite procurement.mitraplumbon.com.conf &&
+             a2ensite tte.mitraplumbon.com.conf &&
+             apache2-foreground"
+
+  database:
+    container_name: mysql-8.4
+    image: mysql:8.4.4
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    networks:
+      - net_lamp
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./config/mysql:/etc/mysql/conf.d
+    environment:
+      MYSQL_ROOT_PASSWORD: ./MyHeroAcademia25
+      MYSQL_DATABASE: db_test
+      MYSQL_USER: vinland
+      MYSQL_PASSWORD: ./Askeladd
+
+  npm:
+    container_name: nginx-proxy-manager
+    image: jc21/nginx-proxy-manager:2
+    restart: unless-stopped
+    networks:
+      - net_lamp
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+networks:
+  net_lamp:
+    name: net_lamp
+
+volumes:
+  mysql_data:
+    name: mysql_data
+    driver: local
