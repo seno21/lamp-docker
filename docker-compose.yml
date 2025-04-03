@@ -1,3 +1,12 @@
+networks:
+  net_lamp:
+    name: net_lamp
+
+volumes:
+  mysql_data:
+    name: mysql_data
+    driver: local
+
 services:
   webserver:
     container_name: apache-php
@@ -46,11 +55,4 @@ services:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
 
-networks:
-  net_lamp:
-    name: net_lamp
 
-volumes:
-  mysql_data:
-    name: mysql_data
-    driver: local
