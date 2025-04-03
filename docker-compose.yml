@@ -11,8 +11,8 @@ services:
       - ./config/app.nzucode.web.id.conf:/etc/apache2/sites-available/app.nzucode.web.id.conf
       - ./config/portal.nzucode.web.id.conf:/etc/apache2/sites-available/portal.nzucode.web.id.conf
     command: >
-      bash -c "a2enmod ssl && a2ensite procurement.mitraplumbon.com.conf &&
-             a2ensite tte.mitraplumbon.com.conf &&
+      bash -c "a2enmod ssl && a2ensite app.nzucode.web.id.conf &&
+             a2ensite portal.nzucode.web.id.conf &&
              apache2-foreground"
 
   database:
